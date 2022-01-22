@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Form from '../components/Form';
 import ProductList from '../components/ProductList';
 
-const Main = (props) => {
-    const [products,setProducts] = useState([]);
-    const[loaded,setLoaded] = useState(false);
+export default () => {
+    const [products, setProducts] = useState([]);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/product')
@@ -20,13 +20,24 @@ const Main = (props) => {
         setProducts(products.filter(product => product._id !== productId));
     }
 
+    const createProduct = product => {
+        axios.post('http://localhost:8000/api/product/new', product)
+            .then(res => {
+                setProducts([...products, res.data]);
+            })
+            .catch(err => console.log(err))
+    }
+
     return (
         <div>
-            <Form />
-            <hr/>
-            {loaded && <ProductList products={products} removeFromDom = {removeFromDom}/>}
+            <Form
+                onSubmitProp={createProduct}
+                initialTitle=''
+                initialPrice=''
+                initialDescription=''
+            />
+            <hr />
+            {loaded && <ProductList products={products} removeFromDom={removeFromDom} />}
         </div>
     )
 }
-
-export default Main;
