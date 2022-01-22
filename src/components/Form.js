@@ -21,7 +21,7 @@ export default () => {
             setPrice('')
             setDescription('')
     }
-    //onChange to update firstName and lastName
+    //onChange to update title and price
     return (
         <form onSubmit={onSubmitHandler}>
             <p>
